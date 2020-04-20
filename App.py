@@ -23,6 +23,78 @@ def getPost():
 #Returns result back to front
     return json.dumps(result)
 
+
+@app.route('/register', methods=['POST'])
+def getReg():
+#Sets Posted JSON from the front to variable content
+    content = request.get_json()
+
+#Decodes posted JSON and sets relevant data to local variables
+    email = content['email']
+    password = content['password']
+    fname = content['firstname']
+    lname = content['lastname']
+    actoken = content['access_token']
+
+#Inserts user data into the database using Register Function and sets result equal to a Boolean
+    result = Register(email, fname, lname, actoken, password)
+    return json.dumps(result)
+    
+def Register(f, l, a, e, p):
+
+    fname = f
+    lname = l
+    actoken = a
+    email = e
+    password = hashlib.sha256(p.encode())
+    hashedpass= password.hexdigest()
+
+    #sql query, do not touch
+    sql = "INSERT INTO acct_logins "
+    sql += "("
+    sql += "  first_name"
+    sql += ", last_name"
+    sql += ",  access_token"
+    sql += ", email"
+    sql += ", pass"
+    sql += ") VALUES ("
+    sql += " '" + fname + "'"
+    sql += ",'" + lname + "'"
+    sql += ",'" + actoken + "'"
+    sql += ",'" + email + "'"
+    sql += ",'" + hashedpass + "'"
+    sql += ")"
+
+    try:
+        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        cur = connection.cursor()
+        connection.autocommit = True
+    except:
+        print("Unable to Connect to Database")
+   
+    try:
+        cur.execute(sql)
+##        cur.execute("SELECT * from acct_logins")
+
+
+##    #Uncomment this block to see what's in the acct_logins
+##        db=cur.fetchall()
+##        print(db)
+##        connection.commit()
+
+    except psycopg2.Error as e:
+        message = "Database error: " + e + "/n SQL: " + sql
+        result = 'false'
+        cur.close()
+        return result
+       
+           
+    result = 'true'
+    message = "Your user account has been added."
+    print(message)
+    cur.close()
+    return result
+
 @app.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', '*')

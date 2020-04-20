@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
+from Login import Login
+from Register import Register
 import psycopg2
 import hashlib
 import json
@@ -40,61 +42,6 @@ def getReg():
     result = Register(fname, lname, actoken, email, password)
     return json.dumps(result)
 
-def Register(f, l, a, e, p):
-
-    fname = f
-    lname = l
-    actoken = a
-    email = e
-    password = hashlib.sha256(p.encode())
-    hashedpass= password.hexdigest()
-
-    #sql query, do not touch
-    sql = "INSERT INTO acct_logins "
-    sql += "("
-    sql += "  first_name"
-    sql += ", last_name"
-    sql += ",  access_token"
-    sql += ", email"
-    sql += ", pass"
-    sql += ") VALUES ("
-    sql += " '" + fname + "'"
-    sql += ",'" + lname + "'"
-    sql += ",'" + actoken + "'"
-    sql += ",'" + email + "'"
-    sql += ",'" + hashedpass + "'"
-    sql += ")"
-
-    try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
-        cur = connection.cursor()
-        connection.autocommit = True
-    except:
-        print("Unable to Connect to Database")
-   
-    try:
-        cur.execute(sql)
-##        cur.execute("SELECT * from acct_logins")
-
-
-##    #Uncomment this block to see what's in the acct_logins
-##        db=cur.fetchall()
-##        print(db)
-##        connection.commit()
-
-    except psycopg2.Error as e:
-        message = "Database error: " + e + "/n SQL: " + sql
-        result = 'false'
-        cur.close()
-        return result
-       
-           
-    result = 'true'
-    message = "Your user account has been added."
-    print(message)
-    cur.close()
-    return result
-
 @app.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
@@ -102,60 +49,6 @@ def after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   response.headers.add('Access-Control-Allow-Credentials', 'true')
   return response
-   
-
-
-def Login(email, password):
-
-    password = hashlib.sha256(password.encode())
-    hashedpass= password.hexdigest()
-
-    sql = ""
-    sql += "SELECT * FROM acct_logins"
-    sql += " WHERE"
-    sql += " ("
-    sql += " email ='" + email + "'"
-    sql += " AND"
-    sql += " pass = '" + hashedpass + "'"
-    sql += " )"
-#    Uncomment to print out query
-#    print(sql)
-    try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
-        cur = connection.cursor()
-        connection.autocommit = True
-    except:
-        print ("I am unable to connect to the database.")
-
-    try:
-       
-        cur.execute(sql)
-        if cur.rowcount == 0:
-            result = False
-            print('NOTHING FOUND')
-            return result
-        else:
-            result = True
-            message = "User information found!"
-            print(message)
-            cur.close()
-            return result
-       
-#uncomment to view all rows in the table        
-#        cur.execute("SELECT * from acct_logins")
-#        rows = cur.fetchall()
-#        print ("\nRows: \n")
-#        for row in rows:
-#            print (row[1],"   ", row[0])
-
-
-           
-
-    except psycopg2.Error as e:
-        message = "Database error: " + e + "/n SQL: " + sql
-        result = 'false'
-        cur.close()
-        return result
 
 if __name__ =="__main__":
     app.debug = True

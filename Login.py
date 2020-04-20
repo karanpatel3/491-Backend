@@ -10,13 +10,17 @@ app = Flask(__name__)
 
 @app.route('/login', methods=['POST'])
 def getPost():
-    # email = request.json
+#Sets Posted JSON from the front to variable content
     content = request.get_json()
-    # req_data = request.get_json()
+
+#Decodes posted JSON and sets email and password to local variables
     email = content['email']
     password = content['password']
 
+#Checks email and password against Login Function and sets result equal to a Boolean
     result = Login(email, password)
+
+#Returns result back to front
     return json.dumps(result)
 
 @app.after_request

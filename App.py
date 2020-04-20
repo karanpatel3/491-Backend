@@ -37,9 +37,9 @@ def getReg():
     actoken = content['access_token']
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
-    result = Register(email, fname, lname, actoken, password)
+    result = Register(fname, lname, actoken, email, password)
     return json.dumps(result)
-    
+
 def Register(f, l, a, e, p):
 
     fname = f

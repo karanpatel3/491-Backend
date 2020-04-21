@@ -20,11 +20,14 @@ def getPost():
     password = content['password']
 
 #Checks email and password against Login Function and sets result equal to a Boolean
-    result = Login(email, password)
+    res = Login(email, password)
 
+    res = {
+        'res' : res
+    }
 #Returns result back to front
-    return json.dumps(result)
-
+    return res
+    
 
 @app.route('/register', methods=['POST'])
 def getReg():
@@ -39,8 +42,11 @@ def getReg():
     actoken = content['token']
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
-    result = Register(fname, lname, actoken, email, password)
-    return json.dumps(result)
+    res = Register(fname, lname, actoken, email, password)
+    res = {
+        'res' : res
+    }
+    return res
 
 @app.after_request
 def after_request(response):

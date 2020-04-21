@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
@@ -34,9 +34,9 @@ def getReg():
 #Decodes posted JSON and sets relevant data to local variables
     email = content['email']
     password = content['password']
-    fname = content['firstname']
-    lname = content['lastname']
-    actoken = content['access_token']
+    fname = content['firstName']
+    lname = content['lastName']
+    actoken = content['token']
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
     result = Register(fname, lname, actoken, email, password)

@@ -12,15 +12,14 @@ CORS(app, support_credentials=True)
 @app.route('/login', methods=['POST'])
 
 @cross_origin(supports_credentials=True)
-# @app.route('/query', methods = ['POST'])
 
 
 @app.after_request
 def after_request(response):
-#   response.headers.add('Access-Control-Allow-Origin', 'r')
-#   response.headers.add('Access-Control-Allow-Credentials', 'true')
-#   response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-#   response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
+  response.headers.add('Access-Control-Allow-Origin', 'r')
+  response.headers.add('Access-Control-Allow-Credentials', 'true')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+  response.headers.add('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS')
   return response
 
 
@@ -45,8 +44,7 @@ def Login(email, password):
     sql += " AND"
     sql += " pass = '" + hashedpass + "'"
     sql += " )"
-#    Uncomment to print out query
-#    print(sql)
+
     try:
         connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()

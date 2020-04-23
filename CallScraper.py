@@ -1,4 +1,4 @@
-from flask import Flask, request, json
+from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from GitHubScraper import GetRepo as gr
@@ -6,14 +6,12 @@ from GitHubScraper import GetRepo as gr
 def GetLang(access_token):
     
     #POST GET THE ACCESS TOKEN OF USER
-    
-    access_token = "XXXX" #REPLACE WITH ACCESS TOKEN WHEN TESTING LOCALLY
+    access_token = "XXXX" #Replace with access token if testing locally
     gi = gr(access_token)
     gi.repo_getter() # Update empty Dictionary
     gi.get_keyval() # Sum up all the respective dictionary key values
     print(gi.emp_dict) # Print final dictionary
     test = gi.emp_dict
-    print(test['Swift'])
     languages=""
     byte_num=""
     
@@ -60,12 +58,13 @@ def GetLang(access_token):
         val = test[key]
         sql = "INSERT INTO "+tablename+" (languages, bytes ) VALUES ('"+key+"', "+str(val)+");"
         cur.execute(sql)
+    
+    test = json.dumps(test)
+    x = json.loads(test)
 
-
-
-    return 'IT WORKED'
+    return x
     
 
 if __name__ =="__main__":
-    access_token = "b203a017f509cd3693a466e398b2ffcb193ea0ed"
+    access_token = "XXXX" #Replace with access token if testing locally
     print(GetLang(access_token))

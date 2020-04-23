@@ -1,40 +1,35 @@
-from flask import Flask, jsonify, request, json
+from flask import Flask, request, json
+from flask_sqlalchemy import SQLAlchemy
 import psycopg2
-
 from GitHubScraper import GetRepo as gr
 
-# import GitHubScraper
-import os 
-# os.system('GitHubScraper.py')
-
-def GetLang(self):
-	# b203a017f509cd3693a466e398b2ffcb193ea0ed - jorge acc_tok
-    #POST GET THE USERNAME OF USER
-    access_token = "b203a017f509cd3693a466e398b2ffcb193ea0ed"
-    # diction = gr.__init__(access_token)
-    # diction2 = gr.repo_getter(access_token)
-    # diction3 = gr.get_keyval(access_token)
-    # print('This is diction: ' + diction)
-    # print('This is diction2: ' + diction2)
-    # print('This is diction3: ' + diction3)
+def GetLang(access_token):
+    
+    #POST GET THE ACCESS TOKEN OF USER
+    
+    access_token = "XXXX" #REPLACE WITH ACCESS TOKEN WHEN TESTING LOCALLY
+    gi = gr(access_token)
+    gi.repo_getter() # Update empty Dictionary
+    gi.get_keyval() # Sum up all the respective dictionary key values
+    print(gi.emp_dict) # Print final dictionary
+    test = gi.emp_dict
+    print(test['Swift'])
     languages=""
     byte_num=""
     
     #send access token to github scraper and get output, dictionary variable equal to output
-    dictionary = obj.emp_dict
-    print(dictionary)
-    #dictionary = result from scraper
+
     #tablename = USERNAME OF USER
     #CREATE TABLE (WITH THE USERNAME OF THE USER) (languages, bytes)
-    tablename = ""
+    tablename = input()
    
     sql = ""
     sql += "CREATE TABLE "
-    sql += "'" + tablename + "'"
+    sql += "" + tablename + ""
     sql += " ("
-    sql += "languages"
-    sql += ", bytes"
-    sql += " )"
+    sql += "languages varchar(255)"
+    sql += ", bytes int"
+    sql += ")"
 
     try:
         connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
@@ -60,21 +55,17 @@ def GetLang(self):
     sql += ",'" + byte_num + "'"
     sql += ")"
     
-    for mydict in diction3:
-        placeholders = ', '.join(['%s'] * len(mydict))
-        columns = ', '.join("`" + str(x).replace('/', '_') + "`" for x in mydict.keys())
-        values = ', '.join("'" + str(x).replace('/', '_') + "'" for x in mydict.values())
-        sql = "INSERT INTO %s ( %s ) VALUES ( %s );" % ('mytable', columns, values)
-        cur.execute(sql)   
+
+    for key in test.keys():
+        val = test[key]
+        sql = "INSERT INTO "+tablename+" (languages, bytes ) VALUES ('"+key+"', "+str(val)+");"
+        cur.execute(sql)
 
 
-	#for i in n.length:
-		#”INSERT INTO [NEW TABLE] (languages, bytes) 
 
-#After the dictionary is inserted, return the languages and bytes to the front as a json
-
-    return jsonify(dictionary)
+    return 'IT WORKED'
+    
 
 if __name__ =="__main__":
-    self.GetLang()
-    #GetLang()
+    access_token = "b203a017f509cd3693a466e398b2ffcb193ea0ed"
+    print(GetLang(access_token))

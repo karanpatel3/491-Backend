@@ -55,6 +55,9 @@ def getScrape():
     username = content['email'] #CHANGE 'EMAIL' TO WHATEVER VARIABLE NAME THAT USERNAME IS SENT
     token = GetTok(username)
     res = GetLang(token)
+    res = {
+        'res' : res #TAKE OUT LINES 58 TO 60 IF RUN INTO JSON ISSUES
+    }
     return res
 
 @app.after_request

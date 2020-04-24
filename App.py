@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
+from CallScraper import GetTok, GetLang
 import psycopg2
 import hashlib
 import json
@@ -46,6 +47,14 @@ def getReg():
     res = {
         'res' : res
     }
+    return res
+
+@app.route('/scraper', methods=['POST'])
+def getScrape():
+    content = request.get_json()
+    username = content['email'] #CHANGE 'EMAIL' TO WHATEVER VARIABLE NAME THAT USERNAME IS SENT
+    token = GetTok(username)
+    res = GetLang(token)
     return res
 
 @app.after_request

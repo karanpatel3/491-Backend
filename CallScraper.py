@@ -22,7 +22,9 @@ def GetTok(email):
     token = token[0]
     return token
     
-def GetLang(access_token):    
+def GetLang(username, access_token):
+	# b203a017f509cd3693a466e398b2ffcb193ea0ed - jorge acc_tok
+    
     #POST GET THE ACCESS TOKEN OF USER
     gi = gr(access_token)
     gi.repo_getter() # Update empty Dictionary
@@ -36,7 +38,7 @@ def GetLang(access_token):
 
     #tablename = USERNAME OF USER
     #CREATE TABLE (WITH THE USERNAME OF THE USER) (languages, bytes)
-    tablename = input()
+    tablename = username
    
     sql = ""
     sql += "CREATE TABLE "
@@ -83,6 +85,7 @@ def GetLang(access_token):
     
 
 if __name__ =="__main__":
-    token = GetTok('karanpatel') #hardcoded for test
+    user = 'karanpatel'
+    token = GetTok(user)
     print(token)
-    print(GetLang(token))
+    print(GetLang(user, token))

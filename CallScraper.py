@@ -3,10 +3,27 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from GitHubScraper import GetRepo as gr
 
+def GetTok(user):
+    try:
+        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        cur = connection.cursor()
+        connection.autocommit = True
+    except:
+        print("Unable to Connect to Database")
+    
+    sql = ""
+    sql += "SELECT access_token FROM acct_logins"
+    sql += " WHERE"
+    sql += " ("
+    sql += " username ='" + user + "'"
+    sql += " )"
+    token = cur.execute(sql)
+    return token
+    
 def GetLang(access_token):
+	# b203a017f509cd3693a466e398b2ffcb193ea0ed - jorge acc_tok
     
     #POST GET THE ACCESS TOKEN OF USER
-    access_token = "XXXX" #Replace with access token if testing locally
     gi = gr(access_token)
     gi.repo_getter() # Update empty Dictionary
     gi.get_keyval() # Sum up all the respective dictionary key values
@@ -66,5 +83,5 @@ def GetLang(access_token):
     
 
 if __name__ =="__main__":
-    access_token = "XXXX" #Replace with access token if testing locally
+    access_token = "c086b9b82f31587d4f288ebacd97e232daa6ba65"
     print(GetLang(access_token))

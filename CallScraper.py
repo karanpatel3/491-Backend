@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import psycopg2
 from GitHubScraper import GetRepo as gr
 
-def GetTok(user):
+def GetTok(email):
     try:
         connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
@@ -15,9 +15,11 @@ def GetTok(user):
     sql += "SELECT access_token FROM acct_logins"
     sql += " WHERE"
     sql += " ("
-    sql += " username ='" + user + "'"
+    sql += " email ='" + email + "'"
     sql += " )"
-    token = cur.execute(sql)
+    cur.execute(sql)
+    token = cur.fetchone()
+    token = token[0]
     return token
     
 def GetLang(access_token):
@@ -83,5 +85,6 @@ def GetLang(access_token):
     
 
 if __name__ =="__main__":
-    access_token = "c086b9b82f31587d4f288ebacd97e232daa6ba65"
-    print(GetLang(access_token))
+    token = GetTok('karanpatel')
+    print(token)
+    print(GetLang(token))

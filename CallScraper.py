@@ -83,6 +83,6 @@ def GetLang(access_token):
     
 
 if __name__ =="__main__":
-    token = GetTok('karanpatel')
+    token = GetTok('karanpatel') #hardcoded for test
     print(token)
     print(GetLang(token))

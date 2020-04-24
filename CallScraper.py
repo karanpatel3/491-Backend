@@ -22,9 +22,7 @@ def GetTok(email):
     token = token[0]
     return token
     
-def GetLang(access_token):
-	# b203a017f509cd3693a466e398b2ffcb193ea0ed - jorge acc_tok
-    
+def GetLang(access_token):    
     #POST GET THE ACCESS TOKEN OF USER
     gi = gr(access_token)
     gi.repo_getter() # Update empty Dictionary

@@ -2,10 +2,8 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
-from CallScraper import GetTok, GetLang
-import psycopg2
-import hashlib
-import json
+from CallScraper import GetTok, GetLang, IfExists
+import psycopg2, random, hashlib, json
 
 app = Flask(__name__)
 
@@ -17,11 +15,11 @@ def getPost():
     content = request.get_json()
 
 #Decodes posted JSON and sets email and password to local variables
-    email = content['email']
+    username = content['userName']
     password = content['password']
 
 #Checks email and password against Login Function and sets result equal to a Boolean
-    res = Login(email, password)
+    res = Login(username, password)
 
     res = {
         'res' : res
@@ -37,13 +35,14 @@ def getReg():
 
 #Decodes posted JSON and sets relevant data to local variables
     email = content['email']
+    git_user = content['github_userName']
     password = content['password']
     fname = content['firstName']
     lname = content['lastName']
     actoken = content['token']
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
-    res = Register(fname, lname, actoken, email, password)
+    res = Register(fname, lname, actoken, git_user, email, password)
     res = {
         'res' : res
     }
@@ -52,11 +51,26 @@ def getReg():
 @app.route('/scraper', methods=['POST'])
 def getScrape():
     content = request.get_json()
-    username = content['email'] #CHANGE 'EMAIL' TO WHATEVER VARIABLE NAME THAT USERNAME IS SENT
-    token = GetTok(username)
-    res = GetLang(username, token)
+    username = content['userName'] #CHANGE 'EMAIL' TO WHATEVER VARIABLE NAME THAT USERNAME IS SENT
+    
+    langs = IfExists(username)
+    
+    labels = []
+    data = []
+    for key in langs:
+        labels.append(key)
+        data.append(langs[key])
+
+    backgroundColor = []
+
+    for c in langs:
+        string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
+        backgroundColor.append(string)
+
     res = {
-        'res' : res
+        'labels' : labels,
+        'data' : data,
+        'backgroundColor' : backgroundColor
     }
     return res
 
@@ -69,5 +83,24 @@ def after_request(response):
   return response
 
 if __name__ =="__main__":
-    app.debug = True
-    app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
+    # app.debug = True
+    # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
+    langs = IfExists('theokahanda')
+    labels = []
+    data = []
+    for key in langs:
+        labels.append(key)
+        data.append(langs[key])
+
+    backgroundColor = []
+
+    for c in langs:
+        string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
+        backgroundColor.append(string)
+
+    res = {
+        'labels' : labels,
+        'data' : data,
+        'backgroundColor' : backgroundColor
+    }
+    print(res)

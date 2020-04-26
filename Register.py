@@ -6,14 +6,18 @@ app = Flask(__name__)
 @app.route('/')
 #Variables below to put into query, convert these to be POSTED later
 @app.route('/register')
-def Register(f, l, a, g, e, p):
-    
-    fname = f
-    lname = l
-    actoken = a
-    gituser = g
-    email = e
-    password = hashlib.sha256(p.encode())
+def Register(c):
+    content = c
+    email = content['email']
+    gituser = content['github_userName']
+    password = content['password']
+    fname = content['firstName']
+    lname = content['lastName']
+    occupation = content['occupation']
+    city = content['city']
+    bio = content['bio']
+    actoken = content['token']
+    password = hashlib.sha256(password.encode())
     hashedpass= password.hexdigest()
 
     #sql query, do not touch
@@ -25,6 +29,9 @@ def Register(f, l, a, g, e, p):
     sql += ", github_name"
     sql += ", email"
     sql += ", pass"
+    sql += ", city"
+    sql += ", bio"
+    sql += ", occupation"
     sql += ") VALUES ("
     sql += " '" + fname + "'"
     sql += ",'" + lname + "'"
@@ -32,6 +39,9 @@ def Register(f, l, a, g, e, p):
     sql += ",'" + gituser + "'"
     sql += ",'" + email + "'"
     sql += ",'" + hashedpass + "'"
+    sql += ",'" + city + "'"
+    sql += ",'" + bio + "'"
+    sql += ",'" + occupation + "'"
     sql += ")"
 
     try:
@@ -63,10 +73,3 @@ def Register(f, l, a, g, e, p):
 if __name__ =="__main__":
     # app.debug = True
     # app.run(host = '0.0.0.0', port = 5000)
-    f = 'Ashis'
-    l = 'Gare'
-    a = '944a69adfc88a90271f1c5c3b47dc1d577db4c58'
-    g = 'ashish'
-    e = 'avg53@rutgers.edu'
-    p = 'yes'
-    print(Register(f, l, a, g, e, p))

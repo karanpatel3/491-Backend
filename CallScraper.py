@@ -1,7 +1,33 @@
 from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2
+import psycopg2, random
 from GitHubScraper import GetRepo as gr
+import numpy as np
+
+def IfExists(username):
+    try:
+        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        cur = connection.cursor()
+        connection.autocommit = True
+    except:
+        print("Unable to Connect to Database")
+    
+    cur.execute("select exists(select * from information_schema.tables where table_name=%s)", (username,))
+    exists = cur.fetchone()[0]
+    print(exists)
+    if exists is True:
+        cur.execute("select * from "+username+"")
+        rows = cur.fetchall()
+
+        di = {}
+
+        for a, b in rows: 
+            di.setdefault(a, []).append(b) 
+        return di 
+
+    else:
+        return GetTok(username)
+
 
 def GetTok(username):
     try:
@@ -15,17 +41,15 @@ def GetTok(username):
     sql += "SELECT access_token FROM acct_logins"
     sql += " WHERE"
     sql += " ("
-    sql += " email ='" + username + "'"
+    sql += "  github_name ='" + username + "'"
     sql += " )"
     cur.execute(sql)
     token = cur.fetchone()
     token = token[0]
-    return token
+    return GetLang(username, token)
     
 def GetLang(username, access_token):
-	# b203a017f509cd3693a466e398b2ffcb193ea0ed - jorge acc_tok
     
-    #POST GET THE ACCESS TOKEN OF USER
     gi = gr(access_token)
     gi.repo_getter() # Update empty Dictionary
     gi.get_keyval() # Sum up all the respective dictionary key values
@@ -36,12 +60,10 @@ def GetLang(username, access_token):
     
     #send access token to github scraper and get output, dictionary variable equal to output
 
-    #tablename = USERNAME OF USER
-    #CREATE TABLE (WITH THE USERNAME OF THE USER) (languages, bytes)
     tablename = username
    
     sql = ""
-    sql += "CREATE TABLE "
+    sql += "CREATE TABLE IF NOT EXISTS "
     sql += "" + tablename + ""
     sql += " ("
     sql += "languages varchar(255)"
@@ -56,22 +78,24 @@ def GetLang(username, access_token):
         print("Unable to Connect to Database")
    
     try:
-        cur.execute(sql)   
+        cur.execute(sql)
+        result = True
+        return result   
     except psycopg2.Error as e:
         message = "Database error: " + e + "/n SQL: " + sql
-        result = 'false'
+        result = False
         cur.close()
         return result
-    
-    sql = "INSERT INTO "
-    sql += " '" + tablename + "'"
-    sql += "("
-    sql += "  languages"
-    sql += ") VALUES ("
-    sql += " '" + languages + "'"
-    sql += ",'" + byte_num + "'"
-    sql += ")"
-    
+
+
+    languages=""
+    byte_num=""
+    try:
+        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        cur = connection.cursor()
+        connection.autocommit = True
+    except:
+        print("Unable to Connect to Database")
 
     for key in test.keys():
         val = test[key]
@@ -79,13 +103,10 @@ def GetLang(username, access_token):
         cur.execute(sql)
     
     test = json.dumps(test)
-    x = json.loads(test)
-
-    return x
-    
+    res = json.loads(test)
+    cur.close()
+    return res
 
 if __name__ =="__main__":
-    user = 'karanpatel'
-    token = GetTok(user)
-    print(token)
-    print(GetLang(user, token))
+    user = 'ashish'
+    print(IfExists(user))

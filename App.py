@@ -34,15 +34,19 @@ def getReg():
     content = request.get_json()
 
 #Decodes posted JSON and sets relevant data to local variables
-    email = content['email']
-    git_user = content['github_userName']
-    password = content['password']
-    fname = content['firstName']
-    lname = content['lastName']
-    actoken = content['token']
+    # email = content['email']
+    # git_user = content['github_userName']
+    # password = content['password']
+    # fname = content['firstName']
+    # lname = content['lastName']
+    # occupation = content['occupation']
+    # city = content['city']
+    # bio = content['bio']
+    # actoken = content['token']
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
-    res = Register(fname, lname, actoken, git_user, email, password)
+    # res = Register(fname, lname, actoken, git_user, email, password)
+    res = Register(content)
     res = {
         'res' : res
     }

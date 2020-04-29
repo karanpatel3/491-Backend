@@ -1,1 +1,1 @@
-web:gunicorn ghsbackend:app
+web:gunicorn app:app

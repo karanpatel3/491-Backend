@@ -108,24 +108,25 @@ def after_request(response):
   return response
 
 if __name__ =="__main__":
+    app.run()
     # app.debug = True
     # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
-    langs = IfExists('theokahanda')
-    labels = []
-    data = []
-    for key in langs:
-        labels.append(key)
-        data.append(langs[key])
+    # langs = IfExists('theokahanda')
+    # labels = []
+    # data = []
+    # for key in langs:
+    #     labels.append(key)
+    #     data.append(langs[key])
 
-    backgroundColor = []
+    # backgroundColor = []
 
-    for c in langs:
-        string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
-        backgroundColor.append(string)
+    # for c in langs:
+    #     string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
+    #     backgroundColor.append(string)
 
-    res = {
-        'labels' : labels,
-        'data' : data,
-        'backgroundColor' : backgroundColor
-    }
-    print(res)
+    # res = {
+    #     'labels' : labels,
+    #     'data' : data,
+    #     'backgroundColor' : backgroundColor
+    # }
+    # print(res)

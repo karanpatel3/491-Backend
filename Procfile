@@ -1,1 +1,1 @@
-web: gunicorn ghsbackend.wsgi
+web: gunicorn wsgi:app

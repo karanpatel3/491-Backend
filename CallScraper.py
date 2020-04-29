@@ -2,7 +2,6 @@ from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2, random
 from GitHubScraper import GetRepo as gr
-import numpy as np
 
 def IfExists(username):
     try:

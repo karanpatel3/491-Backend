@@ -5,7 +5,7 @@ from Register import Register
 from updatetoken import Update
 from CallScraper import GetTok, GetLang, IfExists
 from dynamic import dyn
-import psycopg2, random, hashlib, json, os
+import random, hashlib, json, os
 
 app = Flask(__name__)
 

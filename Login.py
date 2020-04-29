@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, json
 from datetime import datetime
 # from flask_cors import CORS, cross_origin
-import psycopg2, hashlib, os
+import hashlib, psycopg2, os
 
 
 app = Flask(__name__)

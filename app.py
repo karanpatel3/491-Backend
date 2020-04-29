@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def landing():
-    return "<h1>LANDING PAGE</h1>"
+    return "<h1> LANDING PAGE</h1>"
 
 @app.route('/login', methods=['POST'])
 def getPost():

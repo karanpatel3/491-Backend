@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
+from updatetoken import Update
 from CallScraper import GetTok, GetLang, IfExists
 from dynamic import dyn
 import psycopg2, random, hashlib, json
@@ -78,7 +79,21 @@ def getScrape():
         'backgroundColor' : backgroundColor
     }
     return res
+
+@app.route('/update', methods=['POST'])
+def token():
+    content = request.get_json()
     
+    res = Update(content)
+    res = {
+        'res' : res
+    }
+
+
+    # res = Update(gituser, actoken)
+    return res
+
+
 @app.route('/users', methods=['GET'])
 def retusers():
     return dyn()

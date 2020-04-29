@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 
 def my_function():
     with app.app_context():
-        user = db.User(...)
+        user = db.User()
         db.session.add(user)
         db.session.commit()
 
@@ -53,5 +53,5 @@ class Skills(db.Model):
 # cur.execute("UPDATE users SET url = "+url+" WHERE condition = "+(cur.rowcount+1)+"")
 
 if __name__ =="__main__":
-    forever = Users()
-    print(forever)
+    my_function()
+    

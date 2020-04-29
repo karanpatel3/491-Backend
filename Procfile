@@ -1,0 +1,1 @@
+web: gunicorn ghsbackend.wsgi

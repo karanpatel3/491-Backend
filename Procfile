@@ -1,1 +1,1 @@
-web: gunicorn resicode.wsgi
+web: gunicorn resicode.app:app

@@ -110,8 +110,9 @@ def after_request(response):
   return response
 
 if __name__ =="__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(threaded=True, port=port)
+    app.run(debug=True)
+    # port = int(os.environ.get('PORT', 5000))
+    # app.run(threaded=True, port=port)
     # app.debug = True
     # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
     # langs = IfExists('theokahanda')

@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, json
 from datetime import datetime
-from flask_cors import CORS, cross_origin
+# from flask_cors import CORS, cross_origin
 import psycopg2
 import hashlib
 

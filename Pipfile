@@ -10,6 +10,7 @@ flask = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 flask-sqlalchemy = "*"
+pygithub = "*"
 
 [requires]
 python_version = "3.8"

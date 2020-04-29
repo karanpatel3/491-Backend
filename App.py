@@ -46,7 +46,7 @@ def getReg():
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
     # res = Register(fname, lname, actoken, git_user, email, password)
-    res = Register(content) 
+    res = Register(content)
     res = {
         'res' : res
     }

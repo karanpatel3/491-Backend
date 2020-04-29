@@ -9,7 +9,9 @@ import psycopg2, random, hashlib, json, os
 
 app = Flask(__name__)
 
-
+@app.route('/', methods=['GET'])
+def landing():
+    return "<h1>LANDING PAGE</h1>"
 
 @app.route('/login', methods=['POST'])
 def getPost():
@@ -93,7 +95,7 @@ def token():
     # res = Update(gituser, actoken)
     return res
 
-
+@app.route
 @app.route('/users', methods=['GET'])
 def retusers():
     return dyn()

@@ -1,1 +1,1 @@
-web: gunicorn resicode.app:app
+web: gunicorn resicode.app

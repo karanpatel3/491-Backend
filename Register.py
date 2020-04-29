@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, json, jsonify
-import psycopg2, hashlib, json
+import psycopg2, hashlib, json, os
 from CallScraper import GetLang
 
 app = Flask(__name__)
@@ -45,7 +45,9 @@ def Register(c):
     sql += ")"
 
     try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        DATABASE_URL = os.environ['DATABASE_URL']
+        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
         connection.autocommit = True
     except:

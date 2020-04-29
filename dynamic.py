@@ -3,12 +3,14 @@ from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
 from CallScraper import GetTok, GetLang, IfExists
-import psycopg2, random, hashlib, json
+import psycopg2, random, hashlib, json, os
 
 def dyn():
 
     try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        DATABASE_URL = os.environ['DATABASE_URL']
+        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = connection.cursor()
         connection.autocommit = True
     except:

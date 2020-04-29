@@ -1,11 +1,13 @@
 from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2, random
+import psycopg2, random, os
 from GitHubScraper import GetRepo as gr
 
 def IfExists(username):
     try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        DATABASE_URL = os.environ['DATABASE_URL']
+        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = connection.cursor()
         connection.autocommit = True
     except:
@@ -30,7 +32,9 @@ def IfExists(username):
 
 def GetTok(username):
     try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        DATABASE_URL = os.environ['DATABASE_URL']
+        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
         connection.autocommit = True
     except:
@@ -70,7 +74,9 @@ def GetLang(username, access_token):
     sql += ")"
 
     try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+        DATABASE_URL = os.environ['DATABASE_URL']
+        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
         connection.autocommit = True
     except:
@@ -90,7 +96,10 @@ def GetLang(username, access_token):
     languages=""
     byte_num=""
     try:
-        connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
+
+        DATABASE_URL = os.environ['DATABASE_URL']
+        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
+        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
         connection.autocommit = True
     except:

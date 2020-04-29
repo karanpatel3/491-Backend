@@ -5,7 +5,7 @@ from Register import Register
 from updatetoken import Update
 from CallScraper import GetTok, GetLang, IfExists
 from dynamic import dyn
-import psycopg2, random, hashlib, json
+import psycopg2, random, hashlib, json, os
 
 app = Flask(__name__)
 
@@ -108,7 +108,8 @@ def after_request(response):
   return response
 
 if __name__ =="__main__":
-    app.run(threaded=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(threaded=True, port=port)
     # app.debug = True
     # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
     # langs = IfExists('theokahanda')

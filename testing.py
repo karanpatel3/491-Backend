@@ -1,57 +1,33 @@
-#USE FOR TESTING PURPOSES WITH DATABASE
-from flask import Flask 
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
+import psycopg2, os
 
-import psycopg2
+# read database connection url from the enivron variable we just set.
+DATABASE_URL = os.environ.get('DATABASE_URL')
+con = None
+try:
+    # create a new database connection by calling the connect() function
+    con = psycopg2.connect(DATABASE_URL)
 
-app = Flask(__name__)
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://karanpatel:@localhost/test'
-
-db = SQLAlchemy(app)
-
-def my_function():
-    with app.app_context():
-        user = db.User()
-        db.session.add(user)
-        db.session.commit()
-
-class Users(db.Model):
-    __tablename__ = 'users'
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String())
-    firstname = db.Column(db.String())
-    lastname = db.Column(db.String())
-    email = db.Column(db.String())
-    userid = db.Column(db.Integer, primary_key = True)
-    def __repr__(self):
-        return '<User %r>' % self.username
-
-class Skills(db.Model):
-    __tablename__ = 'user_skills'
-
-    skillid = db.Column(db.Integer, primary_key = True)
-    skill_name = db.Column(db.String())
-    byte_num = db.Column(db.String())
-    userid = db.Column(db.Integer, db.ForeignKey('Users.userid'), nullable=False)
-
-# try:
-#     connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
-#     cur = connection.cursor()
-#     connection.autocommit = True
-# except:
-#     print("Unable to Connect to Database")
-
-
-# cur.execute("SELECT * FROM users")
-
-# url = "qr.com/user"+str(cur.rowcount+1)
-
-# cur.execute("UPDATE users SET url = "+url+" WHERE condition = "+(cur.rowcount+1)+"")
-
-if __name__ =="__main__":
-    my_function()
+    #  create a new cursor
+    cur = con.cursor()
     
+    # execute an SQL statement to get the HerokuPostgres database version
+    print('PostgreSQL database version:')
+    cur.execute('SELECT version()')
+    sql = ""
+    sql += "SELECT * FROM acct_logins"
+    cur.execute(sql)
+    print(cur.fetchall())
+    # display the PostgreSQL database server version
+    db_version = cur.fetchone()
+    print(db_version)
+       
+     # close the communication with the HerokuPostgres
+    cur.close()
+except Exception as error:
+    print('Cause: {}'.format(error))
+
+finally:
+    # close the communication with the database server by calling the close()
+    if con is not None:
+        con.close()
+        print('Database connection closed.')

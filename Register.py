@@ -5,7 +5,7 @@ from CallScraper import GetLang
 app = Flask(__name__)
 @app.route('/')
 #Variables below to put into query, convert these to be POSTED later
-@app.route('/register')
+@app.route('/register', methods=['POST'])
 def Register(c):
     content = c
     email = content['email']
@@ -45,7 +45,7 @@ def Register(c):
     sql += ")"
 
     try:
-        DATABASE_URL = os.environ['DATABASE_URL']
+        DATABASE_URL = os.environ.get('DATABASE_URL')
         connection = psycopg2.connect(DATABASE_URL, sslmode='require')
         # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
@@ -67,7 +67,7 @@ def Register(c):
     result = 'true'
     message = "Your user account has been added."
     print(message)
-    GetLang(gituser, actoken)
+    # GetLang(gituser, actoken)
     cur.close()
     return result
    

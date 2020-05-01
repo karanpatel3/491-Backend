@@ -1,6 +1,7 @@
 from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import psycopg2, random, os
+from pprint import pprint
 from GitHubScraper import GetRepo as gr
 
 def IfExists(username):
@@ -60,7 +61,7 @@ def GetLang(username, access_token):
     test = gi.emp_dict
     languages=""
     byte_num=""
-    
+    # pprint(locals())
     #send access token to github scraper and get output, dictionary variable equal to output
 
     tablename = username
@@ -85,36 +86,34 @@ def GetLang(username, access_token):
     try:
         cur.execute(sql)
         result = True
-        return result   
     except psycopg2.Error as e:
         message = "Database error: " + e + "/n SQL: " + sql
         result = False
         cur.close()
-        return result
 
 
     languages=""
     byte_num=""
     try:
 
-        DATABASE_URL = os.environ['DATABASE_URL']
+        DATABASE_URL = os.environ['DATABASE_URL']        
         connection = psycopg2.connect(DATABASE_URL, sslmode='require')
         # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
         cur = connection.cursor()
         connection.autocommit = True
     except:
         print("Unable to Connect to Database")
-
+    print(test)
     for key in test.keys():
         val = test[key]
         sql = "INSERT INTO "+tablename+" (languages, bytes ) VALUES ('"+key+"', "+str(val)+");"
         cur.execute(sql)
-    
     test = json.dumps(test)
     res = json.loads(test)
+    print(res)
     cur.close()
     return res
 
 if __name__ =="__main__":
-    user = 'ashish'
-    print(IfExists(user))
+    user = 'theokahanda'
+    print(GetTok(user))

@@ -28,7 +28,7 @@ def Register(c):
     sql += ",  access_token"
     sql += ", github_name"
     sql += ", email"
-    sql += ", pass"
+    sql += ", passw"
     sql += ", city"
     sql += ", bio"
     sql += ", occupation"

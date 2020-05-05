@@ -45,7 +45,7 @@ def index():
 @app.route('/reg', methods= ['POST'])
 def reg():
     content = request.get_json()
-    
+
     new_entry = Acct(github_name=content['github_userName']
                      ,email=content['email']
                      ,first_name=content['firstName']

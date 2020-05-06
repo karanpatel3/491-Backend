@@ -1,9 +1,10 @@
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
+from app import app
 import os, hashlib
 
-app = Flask(__name__)
+
 db = SQLAlchemy(app)
 
 class Acct(db.Model):

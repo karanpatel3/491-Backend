@@ -1,12 +1,16 @@
 from flask import Flask, request
+from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
-from CallScraper import GetTok, GetLang, IfExists
-import psycopg2, random, hashlib, json
+from TestCallScraper import GetTok, GetLang, IfExists
+import psycopg2, random, hashlib, json, os
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+db = SQLAlchemy(app)
 
 
 @app.route('/login', methods=['POST'])
@@ -46,7 +50,7 @@ def getReg():
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
     # res = Register(fname, lname, actoken, git_user, email, password)
-    res = Register(content)
+    res = Register(content) 
     res = {
         'res' : res
     }

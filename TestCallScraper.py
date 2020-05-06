@@ -18,7 +18,7 @@ def IfExists(username):
         return GetTok(username, id)
 
 def GetTok(username, id):
-    result = Acct.query.filter_by(github_name=username).one()
+    result = Acct.query.filter_by(github_name=username).first()
     token = result.access_token
     return GetLang(id, token)
     

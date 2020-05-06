@@ -28,7 +28,7 @@ def Register(c):
         return 'User added'
 
     except:
-        print ("I am unable to connect to the database.")
+        print(e.orig.args)
         return 'Registration failed, please speak to admin'
    
 

@@ -1,11 +1,11 @@
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
-from app import app
+from app import app, db
 import os, hashlib
 
 
-db = SQLAlchemy(app)
+
 
 class Acct(db.Model):
     __tablename__ = 'acct_logins'

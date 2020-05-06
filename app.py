@@ -7,6 +7,7 @@ from TestCallScraper import GetTok, GetLang, IfExists
 import psycopg2, random, hashlib, json, os
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')

@@ -27,8 +27,8 @@ def Register(c):
         print(obj)
         return 'User added'
 
-    except:
-        print(e.orig.args)
+    except Exception as error:
+        print(error.orig.args)
         return 'Registration failed, please speak to admin'
    
 

@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request, json, jsonify
 import psycopg2, hashlib, json, os
 from CallScraper import GetLang
+from models import Acct, Skills, db
+
 
 app = Flask(__name__)
 @app.route('/')
@@ -8,68 +10,32 @@ app = Flask(__name__)
 @app.route('/register')
 def Register(c):
     content = c
-    email = content['email']
-    gituser = content['github_userName']
-    password = content['password']
-    fname = content['firstName']
-    lname = content['lastName']
-    occupation = content['occupation']
-    city = content['city']
-    bio = content['bio']
-    actoken = content['token']
-    password = hashlib.sha256(password.encode())
-    hashedpass= password.hexdigest()
-
-    #sql query, do not touch
-    sql = "INSERT INTO acct_logins "
-    sql += "("
-    sql += "  first_name"
-    sql += ", last_name"
-    sql += ",  access_token"
-    sql += ", github_name"
-    sql += ", email"
-    sql += ", pass"
-    sql += ", city"
-    sql += ", bio"
-    sql += ", occupation"
-    sql += ") VALUES ("
-    sql += " '" + fname + "'"
-    sql += ",'" + lname + "'"
-    sql += ",'" + actoken + "'"
-    sql += ",'" + gituser + "'"
-    sql += ",'" + email + "'"
-    sql += ",'" + hashedpass + "'"
-    sql += ",'" + city + "'"
-    sql += ",'" + bio + "'"
-    sql += ",'" + occupation + "'"
-    sql += ")"
-
+    content = request.get_json()
     try:
-        DATABASE_URL = os.environ['DATABASE_URL']
-        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
-        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
-        cur = connection.cursor()
-        connection.autocommit = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+        
     except:
-        print("Unable to Connect to Database")
-   
+        print ("I am unable to connect to the database.")
+    
     try:
-        cur.execute(sql)
+        new_entry = Acct(github_name=content['github_userName']
+                     ,email=content['email']
+                     ,first_name=content['firstName']
+                     ,last_name=content['lastName']
+                     ,passw=(hashlib.sha256(content['password'].encode())).hexdigest()
+                     ,occupation=content['occupation']
+                     ,bio=content['bio']
+                     ,access_token=content['token']
+                     ,city=content['city'])
+        db.session.add(new_entry)
+        db.session.commit()
+        obj = db.session.query(Acct).order_by(Acct.email.desc()).first()
+        print(obj)
+        return 'User added'
 
-
-    except psycopg2.Error as e:
-        message = "Database error: " + e + "/n SQL: " + sql
-        result = 'false'
-        cur.close()
-        return result
-       
-           
-    result = 'true'
-    message = "Your user account has been added."
-    print(message)
-    GetLang(gituser, actoken)
-    cur.close()
-    return result
+    except:
+        print ("I am unable to connect to the database.")
+        return 'Registration failed, please speak to admin'
    
 
 if __name__ =="__main__":

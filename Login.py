@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request, json
 from datetime import datetime
-# from flask_cors import CORS, cross_origin
+from flask_cors import CORS, cross_origin
 import hashlib, psycopg2, os
+from models import Acct, Skills, db
+
 
 
 app = Flask(__name__)
@@ -14,43 +16,21 @@ def Login(gituser, password):
     password = hashlib.sha256(password.encode())
     hashedpass= password.hexdigest()
 
-    sql = ""
-    sql += "SELECT * FROM acct_logins"
-    sql += " WHERE"
-    sql += " ("
-    sql += " github_name ='" + gituser + "'"
-    sql += " AND"
-    sql += " pass = '" + hashedpass + "'"
-    sql += " )"
-#    Uncomment to print out query
-#    print(sql)
+
     try:
-        DATABASE_URL = os.environ['DATABASE_URL']
-        connection = psycopg2.connect(DATABASE_URL, sslmode='require')
-        # connection = psycopg2.connect(host="localhost",database="test", user="karanpatel", password="")
-        cur = connection.cursor()
-        connection.autocommit = True
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+        
     except:
         print ("I am unable to connect to the database.")
 
     try:
-       
-        cur.execute(sql)
-        if cur.rowcount == 0:
-            result = False
-            print('NOTHING FOUND')
-            return result
-        else:
-            result = True
-            message = "User information found!"
-            print(message)
-            cur.close()
-            return result     
+        result = Acct.query.filter_by(github_name=gituser, passw=hashedpass).scalar() is not None
+        return result
 
-    except psycopg2.Error as e:
-        message = "Database error: " + e + "/n SQL: " + sql
+
+    except:
+        message = "Database error "
         result = 'false'
-        cur.close()
         return result
        
            

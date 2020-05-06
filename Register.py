@@ -4,10 +4,8 @@ from CallScraper import GetLang
 from models import Acct, Skills, db
 
 
-app = Flask(__name__)
-@app.route('/')
+
 #Variables below to put into query, convert these to be POSTED later
-@app.route('/register')
 def Register(c):
     content = c
     content = request.get_json()

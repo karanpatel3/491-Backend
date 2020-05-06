@@ -4,13 +4,6 @@ from flask_cors import CORS, cross_origin
 import hashlib, psycopg2, os
 from models import Acct, Skills, db
 
-
-
-app = Flask(__name__)
-
-app.route('/')
-app.route('/login')
-
 def Login(gituser, password):
 
     password = hashlib.sha256(password.encode())
@@ -30,8 +23,6 @@ def Login(gituser, password):
    
        
 if __name__ =="__main__":
-    app.debug = True
-    app.run(host = '0.0.0.0', port = 5000)
     passw='yes'
     email = 'jrs487@rutgers.edu'
     print(Login(email, passw))

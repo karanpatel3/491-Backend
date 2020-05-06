@@ -8,8 +8,10 @@ from TestCallScraper import GetTok, GetLang, IfExists
 import psycopg2, random, hashlib, json, os
 from models import app, db
 
+@app.route('/', methods=['GET'])
+def Land():
 
-
+    return "<h1>LANDING PAGE</h1>"
 
 @app.route('/login', methods=['POST'])
 def getPost():
@@ -34,17 +36,6 @@ def getPost():
 def getReg():
 #Sets Posted JSON from the front to variable content
     content = request.get_json()
-
-#Decodes posted JSON and sets relevant data to local variables
-    # email = content['email']
-    # git_user = content['github_userName']
-    # password = content['password']
-    # fname = content['firstName']
-    # lname = content['lastName']
-    # occupation = content['occupation']
-    # city = content['city']
-    # bio = content['bio']
-    # actoken = content['token']
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
     # res = Register(fname, lname, actoken, git_user, email, password)
@@ -94,23 +85,24 @@ def after_request(response):
 
 if __name__ =="__main__":
     # app.debug = True
-    # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
-    langs = IfExists('theokahanda')
-    labels = []
-    data = []
-    for key in langs:
-        labels.append(key)
-        data.append(langs[key])
+    # # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
+    # langs = IfExists('theokahanda')
+    # labels = []
+    # data = []
+    # for key in langs:
+    #     labels.append(key)
+    #     data.append(langs[key])
 
-    backgroundColor = []
+    # backgroundColor = []
 
-    for c in langs:
-        string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
-        backgroundColor.append(string)
+    # for c in langs:
+    #     string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
+    #     backgroundColor.append(string)
 
-    res = {
-        'labels' : labels,
-        'data' : data,
-        'backgroundColor' : backgroundColor
-    }
-    print(res)
+    # res = {
+    #     'labels' : labels,
+    #     'data' : data,
+    #     'backgroundColor' : backgroundColor
+    # }
+    # print(res)
+    print("<h1>WORKING</h1>")

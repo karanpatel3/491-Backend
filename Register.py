@@ -29,7 +29,7 @@ def Register(c):
 
     except Exception as error:
         print(error.orig.args)
-        return 'Registration failed, please speak to admin'
+        return error.orig.args
    
 
 if __name__ =="__main__":

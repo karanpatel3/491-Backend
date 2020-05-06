@@ -9,7 +9,7 @@ def IfExists(username):
     
     id = db.session.query(Acct.userid).filter_by(github_name=username).first()    
     exists = db.session.query(Acct, Skills).filter(Skills.userid==id).first() is not None
-    if exists is True:
+    if exists is True: 
         results = db.session.query(Skills.skill_name, Skills.byte_num).filter(Acct.userid==Skills.userid).all()
         results = dict(results)
         return results

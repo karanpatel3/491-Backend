@@ -1,17 +1,17 @@
 from flask import Flask, request
+from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
-from updatetoken import Update
-from CallScraper import GetTok, GetLang, IfExists
-from dynamic import dyn
-import psycopg2, random, hashlib, json, os, sqlalchemy
+from TestCallScraper import GetTok, GetLang, IfExists
+import psycopg2, random, hashlib, json, os
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def landing():
-    return "<h1> LANDING PAGE</h1>"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+db = SQLAlchemy(app)
+
 
 @app.route('/login', methods=['POST'])
 def getPost():
@@ -50,7 +50,7 @@ def getReg():
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
     # res = Register(fname, lname, actoken, git_user, email, password)
-    res = Register(content)
+    res = Register(content) 
     res = {
         'res' : res
     }
@@ -62,9 +62,9 @@ def getScrape():
     username = content['userName'] #CHANGE 'EMAIL' TO WHATEVER VARIABLE NAME THAT USERNAME IS SENT
     
     langs = IfExists(username)
+    
     labels = []
     data = []
-    
     for key in langs:
         labels.append(key)
         data.append(langs[key])
@@ -82,25 +82,6 @@ def getScrape():
     }
     return res
 
-@app.route('/update', methods=['POST'])
-def token():
-    content = request.get_json()
-    
-    res = Update(content)
-    res = {
-        'res' : res
-    }
-
-
-    # res = Update(gituser, actoken)
-    return res
-
-@app.route
-@app.route('/users', methods=['GET'])
-def retusers():
-    return dyn()
-    
-
 @app.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
@@ -110,27 +91,24 @@ def after_request(response):
   return response
 
 if __name__ =="__main__":
-    app.run(debug=True)
-    # port = int(os.environ.get('PORT', 5000))
-    # app.run(threaded=True, port=port)
     # app.debug = True
     # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
-    # langs = IfExists('theokahanda')
-    # labels = []
-    # data = []
-    # for key in langs:
-    #     labels.append(key)
-    #     data.append(langs[key])
+    langs = IfExists('theokahanda')
+    labels = []
+    data = []
+    for key in langs:
+        labels.append(key)
+        data.append(langs[key])
 
-    # backgroundColor = []
+    backgroundColor = []
 
-    # for c in langs:
-    #     string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
-    #     backgroundColor.append(string)
+    for c in langs:
+        string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
+        backgroundColor.append(string)
 
-    # res = {
-    #     'labels' : labels,
-    #     'data' : data,
-    #     'backgroundColor' : backgroundColor
-    # }
-    # print(res)
+    res = {
+        'labels' : labels,
+        'data' : data,
+        'backgroundColor' : backgroundColor
+    }
+    print(res)

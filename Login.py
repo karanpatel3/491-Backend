@@ -20,7 +20,7 @@ def Login(gituser, password):
     sql += " ("
     sql += " github_name ='" + gituser + "'"
     sql += " AND"
-    sql += " passw = '" + hashedpass + "'"
+    sql += " pass = '" + hashedpass + "'"
     sql += " )"
 #    Uncomment to print out query
 #    print(sql)

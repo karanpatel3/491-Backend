@@ -12,7 +12,6 @@ psycopg2-binary = "*"
 flask-sqlalchemy = "*"
 pygithub = "*"
 flask-cors = "*"
-flask-sqlalchemy-2-1 = "*"
 
 [requires]
 python_version = "3.8"

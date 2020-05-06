@@ -1,6 +1,5 @@
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.ext.automap import automap_base
 import os, hashlib
 
 
@@ -8,7 +7,7 @@ app = Flask(__name__)
 db = SQLAlchemy(app)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 class Acct(db.Model):
     __tablename__ = 'acct_logins'

@@ -11,11 +11,7 @@ app = Flask(__name__)
 def Register(c):
     content = c
     content = request.get_json()
-    try:
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-        
-    except:
-        print ("I am unable to connect to the database.")
+
     
     try:
         new_entry = Acct(github_name=content['github_userName']

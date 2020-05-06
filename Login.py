@@ -16,13 +16,6 @@ def Login(gituser, password):
     password = hashlib.sha256(password.encode())
     hashedpass= password.hexdigest()
 
-
-    try:
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-        
-    except:
-        print ("I am unable to connect to the database.")
-
     try:
         result = Acct.query.filter_by(github_name=gituser, passw=hashedpass).scalar() is not None
         return result

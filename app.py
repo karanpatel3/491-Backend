@@ -1,13 +1,11 @@
 from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
-from dynamic import dyn
-from TestCallScraper import GetTok, GetLang, IfExists
-import psycopg2, random, hashlib, json, os
-from models import app, db
+from CallScraper import GetTok, GetLang, IfExists
+import psycopg2, random, hashlib, json
 
+app = Flask(__name__)
 
 
 
@@ -48,7 +46,7 @@ def getReg():
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
     # res = Register(fname, lname, actoken, git_user, email, password)
-    res = Register(content) 
+    res = Register(content)
     res = {
         'res' : res
     }
@@ -79,9 +77,6 @@ def getScrape():
         'backgroundColor' : backgroundColor
     }
     return res
-@app.route('/users', methods=['GET'])
-def retusers():
-    return dyn()
 
 @app.after_request
 def after_request(response):

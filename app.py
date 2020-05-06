@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
+from dynamic import dyn
 from TestCallScraper import GetTok, GetLang, IfExists
 import psycopg2, random, hashlib, json, os
 from models import app, db
@@ -78,6 +79,9 @@ def getScrape():
         'backgroundColor' : backgroundColor
     }
     return res
+@app.route('/users', methods=['GET'])
+def retusers():
+    return dyn()
 
 @app.after_request
 def after_request(response):

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from Login import Login
@@ -7,6 +7,7 @@ from dynamic import dyn
 from TestCallScraper import GetTok, GetLang, IfExists
 import psycopg2, random, hashlib, json, os
 from models import app, db
+from werkzeug.exceptions import HTTPException
 
 @app.route('/', methods=['GET'])
 def Land():
@@ -52,6 +53,9 @@ def getScrape():
     
     langs = IfExists(username)
     
+    if isinstance(langs, str) is True:
+        return "Invalid Username"
+    
     labels = []
     data = []
     for key in langs:
@@ -70,10 +74,35 @@ def getScrape():
         'backgroundColor' : backgroundColor
     }
     return res
+    
 @app.route('/users', methods=['GET'])
 def retusers():
     
     return dyn()
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    """Return JSON instead of HTML for HTTP errors."""
+    # start with the correct headers and status code from the error
+    response = e.get_response()
+    # replace the body with JSON
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": e.description,
+        "args": e.args
+    })
+    response.content_type = "application/json"
+    return response
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    # pass through HTTP errors
+    if isinstance(e, HTTPException):
+        return e
+
+    # now you're handling non-HTTP exceptions only
+    return render_template('500_generic.html', e=e), 500
 
 @app.after_request
 def after_request(response):

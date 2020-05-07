@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os, hashlib
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 db = SQLAlchemy(app)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

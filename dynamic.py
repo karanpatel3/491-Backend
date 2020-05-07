@@ -16,7 +16,7 @@ def dyn():
     except:
         print("Unable to Connect to Database")
     
-    cur.execute("SELECT github_name FROM public.acct_logis")
+    cur.execute("SELECT github_name FROM public.acct_logins")
     rows = cur.fetchall()
     
     di = {}

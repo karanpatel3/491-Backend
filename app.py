@@ -5,8 +5,11 @@ from Login import Login
 from Register import Register
 from dynamic import dyn
 from TestCallScraper import GetTok, GetLang, IfExists
-import psycopg2, random, hashlib, json, os
+import random, hashlib, json, os
 from models import app, db
+from updatetoken import UpToken
+from updateemail import UpEmail
+from mailing import sendemail
 from werkzeug.exceptions import HTTPException
 
 @app.route('/', methods=['GET'])
@@ -14,17 +17,19 @@ def Land():
 
     return "<h1>LANDING PAGE</h1>"
 
+
+
+
 @app.route('/login', methods=['POST'])
 def getPost():
 #Sets Posted JSON from the front to variable content
     content = request.get_json()
 
 #Decodes posted JSON and sets email and password to local variables
-    username = content['userName']
-    password = content['password']
+
 
 #Checks email and password against Login Function and sets result equal to a Boolean
-    res = Login(username, password)
+    res = Login(content)
 
     res = {
         'res' : res
@@ -33,23 +38,29 @@ def getPost():
     return res
     
 
+
+
+
 @app.route('/register', methods=['POST'])
 def getReg():
 #Sets Posted JSON from the front to variable content
     content = request.get_json()
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
-    # res = Register(fname, lname, actoken, git_user, email, password)
     res = Register(content) 
     res = {
         'res' : res
     }
     return res
 
+
+
+
+
 @app.route('/scraper', methods=['POST'])
 def getScrape():
     content = request.get_json()
-    username = content['userName'] #CHANGE 'EMAIL' TO WHATEVER VARIABLE NAME THAT USERNAME IS SENT
+    username = content['userName']
     
     langs = IfExists(username)
     
@@ -74,11 +85,47 @@ def getScrape():
         'backgroundColor' : backgroundColor
     }
     return res
-    
+
+
+
+
+
 @app.route('/users', methods=['GET'])
 def retusers():
     
     return dyn()
+
+
+
+
+@app.route('/uptoken', methods=['POST'])
+def uptoken():
+    content = request.get_json()
+    
+    res = UpToken(content)
+    res = {
+        'res' : res
+    }
+
+
+@app.route('/upemail', methods=['POST'])
+def UpToken():
+    content = request.get_json()
+    
+    res = UpEmail(content)
+    res = {
+        'res' : res
+    }
+
+@app.route('/email', methods=['GET', 'POST'])
+def Mailing():
+    # if request.method == 'GET':
+    name = "Karan"
+    email = 'kpp86@rutgers.edu'
+    sendemail(name, email)
+    
+    return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
+    
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
@@ -95,6 +142,8 @@ def handle_exception(e):
     response.content_type = "application/json"
     return response
 
+
+
 @app.errorhandler(Exception)
 def handle_exception(e):
     # pass through HTTP errors
@@ -103,6 +152,8 @@ def handle_exception(e):
 
     # now you're handling non-HTTP exceptions only
     return render_template('500_generic.html', e=e), 500
+
+
 
 @app.after_request
 def after_request(response):
@@ -114,24 +165,5 @@ def after_request(response):
 
 if __name__ =="__main__":
     # app.debug = True
-    # # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
-    # langs = IfExists('theokahanda')
-    # labels = []
-    # data = []
-    # for key in langs:
-    #     labels.append(key)
-    #     data.append(langs[key])
-
-    # backgroundColor = []
-
-    # for c in langs:
-    #     string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
-    #     backgroundColor.append(string)
-
-    # res = {
-    #     'labels' : labels,
-    #     'data' : data,
-    #     'backgroundColor' : backgroundColor
-    # }
-    # print(res)
+    # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
     print("<h1>WORKING</h1>")

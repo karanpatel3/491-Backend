@@ -3,6 +3,7 @@ appdirs==1.4.3
 asgiref==3.2.7
 astroid==2.3.3
 autopep8==1.5
+Babel==2.8.0
 blinker==1.4
 certifi==2019.11.28
 chardet==3.0.4
@@ -14,10 +15,15 @@ Django==3.0.4
 djangorestframework==3.11.0
 filelock==3.0.12
 Flask==1.1.2
+Flask-BabelEx==0.9.4
 Flask-Cors==3.0.8
+Flask-Login==0.5.0
 Flask-Mail==0.9.1
 Flask-Migrate==2.5.3
+Flask-Principal==0.4.0
+Flask-Security==3.0.0
 Flask-SQLAlchemy==2.4.1
+Flask-WTF==0.14.3
 gunicorn==20.0.4
 idna==2.9
 isort==4.3.21
@@ -31,6 +37,7 @@ matplotlib==3.2.1
 mccabe==0.6.1
 numpy==1.18.1
 pandas==1.0.3
+passlib==1.7.2
 pep8==1.7.1
 pipenv==2018.11.26
 psycopg2==2.8.5
@@ -51,10 +58,13 @@ requests==2.23.0
 simplejson==3.17.0
 six==1.14.0
 snowballstemmer==2.0.0
+speaklater==1.3
 SQLAlchemy==1.3.16
 sqlparse==0.3.1
+toml==0.10.0
 urllib3==1.25.8
 virtualenv==20.0.15
 virtualenv-clone==0.5.4
 Werkzeug==1.0.1
 wrapt==1.11.2
+WTForms==2.3.1

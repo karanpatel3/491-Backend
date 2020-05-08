@@ -1,5 +1,6 @@
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore
 import os, hashlib
 
 
@@ -11,12 +12,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 
 class Acct(db.Model):
     __tablename__ = 'acct_logins'
-    userid = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, primary_key=True, unique=True)
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
-    github_name = db.Column(db.String)
+    github_name = db.Column(db.String, unique=True)
     passw = db.Column(db.String)
-    email = db.Column(db.String)
+    email = db.Column(db.String, unique=True)
     bio = db.Column(db.String)
     city = db.Column(db.String)
     occupation = db.Column(db.String)

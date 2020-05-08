@@ -22,10 +22,13 @@ def IfExists(username):
             return GetTok(username, id)
     else:
         return 'Invalid Username'
+
+
 def GetTok(username, id):
     result = Acct.query.filter_by(github_name=username).one()
     token = result.access_token
     return GetLang(id, token)
+    
     
 def GetLang(id, access_token):
     gi = gr(access_token)
@@ -56,7 +59,12 @@ def VerifyTok(access_token):
             user = g.get_user().get_repos()
             print(user)
             return user.name
+            
         except BadCredentialsException as e:
+            
+            error_message = "The token you have entered is invalid."
+            error_message += " The token is either expired, revoked, or mispelled."
+            error_message += " Please confirm the validity and spelling of the token and try again."
             
             return e
 

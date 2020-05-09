@@ -119,39 +119,41 @@ def UpToken():
 
 @app.route('/email', methods=['GET', 'POST'])
 def Mailing():
-    # if request.method == 'GET':
-    name = "Karan"
-    email = 'kpp86@rutgers.edu'
-    sendemail(name, email)
+    if request.method == 'GET':
+        name = "Karan"
+        email = 'kpp86@rutgers.edu'
+        sendemail(name, email)
+        return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
+
     
-    return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
+    return "<h1>TIME TO CODE AGAIN :( :| :) </h1>"
     
 
-@app.errorhandler(HTTPException)
-def handle_exception(e):
-    """Return JSON instead of HTML for HTTP errors."""
-    # start with the correct headers and status code from the error
-    response = e.get_response()
-    # replace the body with JSON
-    response.data = json.dumps({
-        "code": e.code,
-        "name": e.name,
-        "description": e.description,
-        "args": e.args
-    })
-    response.content_type = "application/json"
-    return response
+# @app.errorhandler(HTTPException)
+# def handle_exception(e):
+#     """Return JSON instead of HTML for HTTP errors."""
+#     # start with the correct headers and status code from the error
+#     response = e.get_response()
+#     # replace the body with JSON
+#     response.data = json.dumps({
+#         "code": e.code,
+#         "name": e.name,
+#         "description": e.description,
+#         "args": e.args
+#     })
+#     response.content_type = "application/json"
+#     return response
 
 
 
-@app.errorhandler(Exception)
-def handle_exception(e):
-    # pass through HTTP errors
-    if isinstance(e, HTTPException):
-        return e
+# @app.errorhandler(Exception)
+# def handle_exception(e):
+#     # pass through HTTP errors
+#     if isinstance(e, HTTPException):
+#         return e
 
-    # now you're handling non-HTTP exceptions only
-    return render_template('500_generic.html', e=e), 500
+#     # now you're handling non-HTTP exceptions only
+#     return render_template('500_generic.html', e=e), 500
 
 
 
@@ -165,5 +167,5 @@ def after_request(response):
 
 if __name__ =="__main__":
     # app.debug = True
-    # app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
+    app.run(host = '0.0.0.0', port = 5000, debug=True, threaded=True)
     print("<h1>WORKING</h1>")

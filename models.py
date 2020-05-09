@@ -1,6 +1,6 @@
 from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore
+# from flask_security import Security, SQLAlchemyUserDatastore
 import os, hashlib
 
 

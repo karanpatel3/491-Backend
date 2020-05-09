@@ -16,7 +16,7 @@ with app.app_context():
 
     def sendemail(name, email):
 
-        msg = Message("OMG GUESS WHAT??!?!?!??!?!?!"+name+"",
+        msg = Message("OMG GUESS WHAT "+name+"??!?!?!??!?!?!",
                     sender="resicode@gmail.com",
                     recipients=[email])
 

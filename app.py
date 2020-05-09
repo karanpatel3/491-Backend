@@ -88,13 +88,10 @@ def getScrape():
 
 
 
-
-
 @app.route('/users', methods=['GET'])
 def retusers():
     
     return dyn()
-
 
 
 

@@ -8,7 +8,7 @@ from CallScraper import GetTok, GetLang, IfExists
 import random, hashlib, json, os
 from models import app, db
 from updateinfo import UpToken, UpEmail
-from mailing import sendemail
+from mailing import sendemail, sendfromdb
 from werkzeug.exceptions import HTTPException
 
 @app.route('/', methods=['GET'])
@@ -124,7 +124,15 @@ def Mailing():
     
     return "<h1>TIME TO CODE AGAIN :( :| :) </h1>"
     
+@app.route('/dbemail', methods=['GET', 'POST'])
+def DBMailing():
+    if request.method == 'GET':
+        name = "karanpatel3"
+        sendfromdb(name)
+        return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
 
+    
+    return "<h1>TIME TO CODE AGAIN :( :| :) </h1>"
 # @app.errorhandler(HTTPException)
 # def handle_exception(e):
 #     """Return JSON instead of HTML for HTTP errors."""

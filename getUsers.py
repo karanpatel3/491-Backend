@@ -1,10 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
-from Login import Login
-from Register import Register
-from CallScraper import GetTok, GetLang, IfExists
 from models import db, Acct
-import psycopg2, random, hashlib, json, os
 
 def dyn():
 

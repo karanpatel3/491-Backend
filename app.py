@@ -4,7 +4,7 @@ from flask_cors import CORS, cross_origin
 from Login import Login
 from Register import Register
 from dynamic import dyn
-from TestCallScraper import GetTok, GetLang, IfExists
+from CallScraper import GetTok, GetLang, IfExists
 import random, hashlib, json, os
 from models import app, db
 from updatetoken import UpToken

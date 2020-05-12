@@ -15,7 +15,7 @@ def Land():
         return render_template('LandingPageBackend.html')
 
     if request.method == 'POST':
-        return "<h1>Ummmmmmm what exactly are you trying to send me?!?!?!?!?!?!?!\n This is the Homepage route......but Welcome to Resicode!</h1>"        
+        return render_template('LandingPageBackendPOST.html') 
 
 
 @app.route('/login', methods=['POST'])

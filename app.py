@@ -15,7 +15,7 @@ def Land():
         return render_template('LandingPageBackend.html')
 
     if request.method == 'POST':
-        return render_template('LandingPageBackendPOST.html') 
+        return render_template('LandingPageBackendPost.html') 
 
 
 @app.route('/login', methods=['POST'])

@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from models import db, Acct
 
-def dyn():
+def ListUsers():
 
     try:
         rows = db.session.query(Acct.github_name).all()
@@ -26,4 +26,4 @@ def dyn():
     
 
 if __name__ =="__main__":
-    dyn()
+    ListUsers()

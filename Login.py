@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, json
 from datetime import datetime
 from flask_cors import CORS, cross_origin
-import hashlib, psycopg2, os
+import hashlib, os
 from models import Acct, Skills, db
 
 def Login(content):
@@ -25,10 +25,7 @@ def Login(content):
         print(error.orig.args)
         return error.orig.args
        
-           
-   
-       
-if __name__ =="__main__":
-    passw='yes'
-    email = 'jrs487@rutgers.edu'
-    print(Login(email, passw))
+# if __name__ =="__main__":
+#     passw='yes'
+#     email = 'jrs487@rutgers.edu'
+#     print(Login(email, passw))

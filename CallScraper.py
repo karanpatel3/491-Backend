@@ -24,12 +24,14 @@ def IfExists(username):
     else:
         return 'Invalid Username'
 
+#Queries DB for token based on username
 def GetTok(username, id):
     result = Acct.query.filter_by(github_name=username).one()
     token = result.access_token
     return GetLang(id, token)
     
-    
+#Calls functions in GitHubScraper.py to get user's skills then inserts them in the user skills table
+#returns a json of languages and bytes
 def GetLang(id, access_token):
     gi = gr(access_token)
     gi.repo_getter() # Update empty Dictionary
@@ -62,11 +64,11 @@ def GetLang(id, access_token):
             
 #         except BadCredentialsException as e:
             
-#             error_message = "The token you have entered is invalid."
-#             error_message += " The token is either expired, revoked, or mispelled."
+#             error_message = "The personal access token you have entered is invalid."
+#             error_message += " It is either expired, revoked, or mispelled."
 #             error_message += " Please confirm the validity and spelling of the token and try again."
             
-#             return e
+#             return e, error_message
 
 #     elif len(access_token)<40:
 #         return "Invalid Token. Character Count is less than minimum Token length."

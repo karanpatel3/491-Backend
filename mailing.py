@@ -15,24 +15,35 @@ mail = Mail(app)
 
 def sendemail(name, email):
 
-    msg = Message("OMG GUESS WHAT "+name+"??!?!?!??!?!?!",
-                sender="resicode@gmail.com",
-                recipients=[email])
+    try:
+        msg = Message("OMG GUESS WHAT "+name+"??!?!?!??!?!?!",
+                    sender="resicode@gmail.com",
+                    recipients=[email])
 
-    msg.body = "IT'S WORKING \n -K "
-    mail.send(msg)
-    return "Message has been sent to "+name+" at "+email+""
+        msg.body = "IT'S WORKING \n -K "
+        mail.send(msg)
+        return "Message has been sent to "+name+" at "+email+""
+
+    except Exception as error:
+        print(error.orig.args)
+        return error.orig.args
 
 def sendfromdb(name):
-    user = Acct.query.filter_by(github_name=name).one()
-    msg = Message("OMG GUESS WHAT "+user.first_name+"??!?!?!??!?!?!",
-                sender="resicode@gmail.com",
-                recipients=[user.email])
-
-    msg.body = "IT'S WORKING \n -K "
-    mail.send(msg)
     
-    return "Message has been sent to "+user.first_name+" at "+user.email+""
+    try: 
+        user = Acct.query.filter_by(github_name=name).one()
+        msg = Message("OMG GUESS WHAT "+user.first_name+"??!?!?!??!?!?!",
+                    sender="resicode@gmail.com",
+                    recipients=[user.email])
+
+        msg.body = "IT'S WORKING \n -K "
+        mail.send(msg)
+    
+        return "Message has been sent to "+user.first_name+" at "+user.email+""
+    
+    except Exception as error:
+        print(error.orig.args)
+        return error.orig.args
 
 if __name__ =="__main__":
     name = "Dayanna"

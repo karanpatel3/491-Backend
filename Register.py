@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, json, jsonify
-import psycopg2, hashlib, json, os
+import hashlib, os
 from CallScraper import GetLang
 from models import Acct, Skills, db
 

@@ -1,96 +1,100 @@
 from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
-from Login import Login
-from Register import Register
-from getUsers import dyn
-from CallScraper import GetTok, GetLang, IfExists
+from getUsers import ListUsers
+# from CallScraper import GetTok, GetLang, IfExists |To do: see if the below import works, if so delete this one.
 import random, hashlib, json, os
 from models import app, db
 from updateinfo import UpToken, UpEmail
 from mailing import sendemail, sendfromdb
 from werkzeug.exceptions import HTTPException
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def Land():
+    if request.method == 'GET':
+        return render_template('LandingPageBackend.html')
 
-    return "<h1>LANDING PAGE</h1>"
-
-
+    if request.method == 'POST':
+        return "<h1>Ummmmmmm what exactly are you trying to send me?!?!?!?!?!?!?!\n This is the Homepage route......but Welcome to Resicode!</h1>"        
 
 
 @app.route('/login', methods=['POST'])
 def getPost():
-#Sets Posted JSON from the front to variable content
-    content = request.get_json()
+#Sets Posted JSON from the front to variable content, then checks against Login function
+    if request.method == 'POST':
+        from Login import Login
+        content = request.get_json()
+        res = Login(content)
 
-#Decodes posted JSON and sets email and password to local variables
-
-
-#Checks email and password against Login Function and sets result equal to a Boolean
-    res = Login(content)
-
-    res = {
+        res = {
         'res' : res
-    }
+        }
 #Returns result back to front
-    return res
-    
+        return res
+    if request.method == 'GET':
+        return "<h1>YOU NEED TO POST A JSON TO LOGIN A USER</h1>"
 
 
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def getReg():
 #Sets Posted JSON from the front to variable content
-    content = request.get_json()
+    if request.method == 'POST':
+        from Register import Register
+        content = request.get_json()
 
 #Inserts user data into the database using Register Function and sets result equal to a Boolean
-    res = Register(content) 
-    res = {
-        'res' : res
-    }
-    return res
+        res = Register(content) 
+        res = {
+            'res' : res
+        }
+        return res
+    
+    if request.method == 'GET':
+        return "<h1>YOU NEED TO POST A JSON TO REGISTER A USER</h1>"
 
 
 
-
-
-@app.route('/scraper', methods=['POST'])
+@app.route('/scraper', methods=['GET', 'POST'])
 def getScrape():
-    content = request.get_json()
-    username = content['userName']
-    
-    langs = IfExists(username)
-    
-    if isinstance(langs, str) is True:
-        return "Invalid Username"
-    
-    labels = []
-    data = []
-    for key in langs:
-        labels.append(key)
-        data.append(langs[key])
+    if request.method == 'POST':
 
-    backgroundColor = []
+        content = request.get_json()
+        username = content['userName']
 
-    for c in langs:
-        string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
-        backgroundColor.append(string)
+        from CallScraper import IfExists
+        
+        langs = IfExists(username)
+        
+        if isinstance(langs, str) is True:
+            return "Invalid Username"
+        
+        labels = []
+        data = []
+        for key in langs:
+            labels.append(key)
+            data.append(langs[key])
 
-    res = {
-        'labels' : labels,
-        'data' : data,
-        'backgroundColor' : backgroundColor
-    }
-    return res
+        backgroundColor = []
+
+        for c in langs:
+            string = 'rgba({},{},{},0.6)'.format(random.randint(1, 250), random.randint(1, 250), random.randint(1, 250))
+            backgroundColor.append(string)
+
+        res = {
+            'labels' : labels,
+            'data' : data,
+            'backgroundColor' : backgroundColor
+        }
+        return res
 
 
 
 @app.route('/users', methods=['GET'])
 def retusers():
     
-    return dyn()
+    return ListUsers()
 
 
 
@@ -121,6 +125,11 @@ def Mailing():
         sendemail(name, email)
         return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
 
+    if request.method == 'POST':
+        content = request.get_json()
+        name = content['userName']
+        sendemail(name)
+        return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
     
     return "<h1>TIME TO CODE AGAIN :( :| :) </h1>"
     
@@ -130,9 +139,15 @@ def DBMailing():
         name = "karanpatel3"
         sendfromdb(name)
         return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
-
+    
+    if request.method == 'POST':
+        content = request.get_json()
+        name = content['userName']
+        sendfromdb(name)
+        return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
     
     return "<h1>TIME TO CODE AGAIN :( :| :) </h1>"
+    
 # @app.errorhandler(HTTPException)
 # def handle_exception(e):
 #     """Return JSON instead of HTML for HTTP errors."""

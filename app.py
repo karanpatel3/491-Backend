@@ -2,7 +2,6 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from getUsers import ListUsers
-# from CallScraper import GetTok, GetLang, IfExists |To do: see if the below import works, if so delete this one.
 import random, hashlib, json, os
 from models import app, db
 from updateinfo import UpToken, UpEmail
@@ -128,7 +127,8 @@ def Mailing():
     if request.method == 'POST':
         content = request.get_json()
         name = content['userName']
-        sendemail(name)
+        email = content['email']
+        sendemail(name, email)
         return "<h1><strong>CHECK YOUR EMAIL</strong></h1>"
     
     return "<h1>TIME TO CODE AGAIN :( :| :) </h1>"

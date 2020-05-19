@@ -1,6 +1,6 @@
 from flask import Flask, request, json, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2, random, os
+import random, os
 from github import Github, BadCredentialsException
 from GitHubScraper import GetRepo as gr
 from models import Acct, Skills, db

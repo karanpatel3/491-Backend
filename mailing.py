@@ -16,17 +16,19 @@ mail = Mail(app)
 def sendemail(name, email):
 
     try:
-        msg = Message("OMG GUESS WHAT "+name+"??!?!?!??!?!?!",
+        msg = Message("TESTING",
                     sender="resicode@gmail.com",
                     recipients=[email])
 
-        msg.body = "IT'S WORKING \n -K "
+        msg.body = "WELCOME TO RESICODE"
+        # with app.open_resource("image.png") as fp: #TO ATTACH AN IMAGE
+        #     msg.attach("image.png", "image/png", fp.read())
         mail.send(msg)
         return "Message has been sent to "+name+" at "+email+""
 
     except Exception as error:
-        print(error.orig.args)
-        return error.orig.args
+        print(error)
+    #     return error.orig.args
 
 def sendfromdb(name):
     
